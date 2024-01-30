@@ -1,0 +1,69 @@
+/* lecturer.css */
+
+body {
+    font-family: Arial, sans-serif, italic;
+    margin: 15px;
+    margin-left: 0%;
+    margin-right: 0%;
+    padding: 0%;
+    background-image: url('images/webbc3.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-size: 100% 200px;
+    background-position: center;
+    color: #999494;
+    margin: 0;
+    border-top: 10px solid #b3934d;
+    border-bottom: 10px solid #b3934d;
+    margin-bottom: 50px;
+}
+
+.img2 {
+    margin-left: 150px;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+}
+
+#tableBody {
+    margin: 0 auto; /* Set left and right margins to 'auto' */
+    width: 50%; /* Adjust the width as needed */
+  }
+  
+  #tableBody th {
+    font-size: 20px;
+    text-align: center;
+    color: #b1aeae;
+    border: 1px solid #b1aeae; /* Add a 1px solid border around each cell */
+}
+
+#tableBody td {
+
+    text-align : center;
+    color: white;
+    border: 1px solid #b1aeae; /* Add a 1px solid border around each cell */
+}
+
+/* Add a class for left-aligned cells in the "Name" column */
+#tableBody .left-align {
+    text-align: left;
+}
+
+
+    
+
+footer {
+    margin-top: 200px;
+    text-align: center;
+    padding: 10px;
+    background-color: #d7d0d0;
+}

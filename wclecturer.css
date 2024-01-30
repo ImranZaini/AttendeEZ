@@ -1,0 +1,106 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif, italic;
+    margin: 15px;
+    margin-left: 0%;
+    margin-right: 0%;
+    padding: 0%;
+    background-image: url('images/webbc3.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+}
+
+
+
+
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center content horizontally */
+    padding: 20px;
+    background-size: 100% 200px;
+    background-position: center;
+    color: #999494;
+    margin: 0;
+    border-top: 10px solid #b3934d;
+    border-bottom: 10px solid #b3934d;
+    margin-bottom: 50px;
+}
+h1 {
+    margin-top: 55px;
+    margin-bottom: 50px;
+    margin-left: 20px;
+    font-family: italic;
+    color: #b1aeae;
+    font-size: 30px;
+    white-space: nowrap;
+}
+.navbar {
+    background-color: #333; /* Choose your desired background color */
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 40px; /* Adjust this value to your preference */
+    border-top: 5px solid #b3934d; /* Chooseable border color for the bottom */
+    border-bottom: 5px solid #b3934d; /* Chooseable border color for the bottom */
+
+
+}
+
+.navbar a {
+    float: right;
+    display: block;
+    color: #b3934d;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #333; /* Choose your desired hover background color */
+    color: white;
+}
+
+.container {
+    text-align: center;
+}
+
+.buttons-container {
+    margin-top: 20px;
+}
+
+.navigation-button {
+    display: inline-block;
+    padding: 20px 40px; /* 10 times bigger */
+    margin: 0 10px;
+    text-decoration: none;
+    color: #363640;
+    background-color: #b3934d;
+    border-radius: 100px;
+    border: 5px solid #b1aeae; /* Chooseable border color (default: green) */
+    font-size: 50px;
+    transition: background-color 0.3s ease;
+}
+
+.navigation-button:hover {
+    background-color: #2980b9;
+}
+
+/* Customizable fill and border colors */
+.custom-button {
+    background-color: #ff6347; /* Chooseable fill color (default: tomato) */
+    border: 2px solid #008000; /* Chooseable border color (default: green) */
+}
+
+.custom-button:hover {
+    background-color: #ff4500; /* Chooseable hover fill color (default: orangered) */
+}

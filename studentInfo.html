@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information</title>
+    <link rel="stylesheet" href="studentInfo.css">
+</head>
+
+
+<body>
+    <header class="page-header">
+        <nav class="navbar">
+            <a href="student.html">Home</a>
+            <a href="Reminder.html">Reminder</a>
+            <a href="schedule.html">Student Schedule</a>
+        </nav>
+        <h2>Student Information</h2>
+    </header>
+    <label>FirstName: </label>
+    <input type="text" id="FnameInp">
+    <br><br>    
+
+    <label>LastName: </label>
+    <input type="text" id="LnameInp">
+    <br><br>  
+
+    <label>Matric Number: </label>
+    <input type="number" id="matricInp">
+    <br><br>
+    
+    <label>Year: </label>
+    <select id="YearInp">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+    <br><br>
+
+    <label>School</label>
+    <select id="SchoolInp">
+        <option value="School of Computer Sciences">School of Computer Sciences</option>
+        <option value="School of Mathematical and Sciences">School of Mathematical and Sciences</option>
+        <option value="School of Housing Building and Planning">School of Housing Building and Planning</option>
+        <option value="School of Languages and Literatures">School of Languages and Literatures</option>
+        <option value="School of Humanities">School of Humanities</option>
+        <option value="School of Biology and Sciences">School of Biology and Sciences</option>
+    </select>
+    <br><br>  
+    
+    <button id="DelBtn">Delete</button>
+    <button id="UpdBtn">Update</button>
+
+    
+ 
+    <script type="module">
+       
+       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEvx30y193C0EWzaOvjTL6vs2uPWlPW4I",
+            authDomain: "student-aa83a.firebaseapp.com",
+            databaseURL: "https://student-aa83a-default-rtdb.firebaseio.com",
+            projectId: "student-aa83a",
+            storageBucket: "student-aa83a.appspot.com",
+            messagingSenderId: "416227069274",
+            appId: "1:416227069274:web:a5e25c84a083dd967d7763"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        import { getDatabase, ref, set, get, update, remove } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        console.log(loggedInUser);
+        const uid = loggedInUser.uid;
+        console.log("User UID:", uid);
+
+        const db = getDatabase();
+        let FnameInp = document.getElementById('FnameInp');
+        let LnameInp = document.getElementById('LnameInp');
+        let matricInp = document.getElementById('matricInp');
+        let YearInp = document.getElementById('YearInp');
+        let SchoolInp= document.getElementById('SchoolInp');
+
+        let UpdBtn = document.getElementById('UpdBtn');
+        let DelBtn = document.getElementById('DelBtn');
+
+        
+
+        matricInp.addEventListener('change', () => {
+            const matricNumber = matricInp.value;
+            getStudentData(matricNumber);
+        });
+
+        async function UpdateData() {
+            if (!validateData()) {
+            alert("Please enter valid data.");
+            return;
+        }
+
+        try {
+            const studentData = await get(ref(db, 'StudentInfo/' + matricInp.value));
+
+            if (!studentData.exists()) {
+            alert("No student found with the provided matric number.");
+            return;
+            }
+
+        await update(ref(db, 'StudentInfo/' + matricInp.value), {
+            studentName: {firstname: FnameInp.value, lastname: LnameInp.value},
+            school: SchoolInp.value,
+            year: YearInp.value,
+            matricNumber: matricInp.value
+            });
+
+            alert("Data updated Successfully");
+            } catch (error) {
+            alert("Unsuccessful");
+            console.log(error);
+            }
+        }
+
+        function DeleteData(){
+            if (!validateData2()) {
+                alert("Please enter valid data.");
+            return;
+            }
+            remove(ref(db,'StudentInfo/'+ matricInp.value),{
+                studentName: {firstname: FnameInp.value, lastname: LnameInp.value},
+                school: SchoolInp.value,
+                year: YearInp.value,
+                matricNumber: matricInp.value
+            })
+            .then(()=>{
+                alert("Data removed Successfully");
+            })
+            .catch(()=>{
+                alert("Unsuccessful");
+                console.log(error);
+            })
+        }
+        // Validate data function
+        function validateData1() {
+            if (FnameInp.value === "" || LnameInp.value === "" || matricInp.value === "" || YearInp.value === "" || SchoolInp.value === "") {
+            return false;
+        }
+            return true;
+        }
+
+        function validateData2() {
+            if ( matricInp.value === "") {
+            return false;
+        }
+            return true;
+        }
+
+
+        
+        
+        DelBtn.addEventListener('click', DeleteData);
+        UpdBtn.addEventListener('click', UpdateData);
+        
+      </script>
+</body>
+</html>

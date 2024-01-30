@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Page</title>
+    <link rel="stylesheet" type="text/css" href="attendancelist.css"> <!-- Link to the external CSS file -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+</head>
+<body>
+
+    <header>
+        <img class="img2" src="images/u5.png" alt="Lecturer Image" width="700" height="250">
+
+        <nav class="navbar">
+            <a href="index.html">Logout</a>
+            <a href="wclecturer.html">Attendance</a>
+            <a href="Announce.html">Announcement</a>
+    </header>
+
+    <ct>AKP 505 Attendance List</ct>
+
+
+    <div>
+        <pq>Total Students Attended: <span id="totalAttended"></span></pq>
+        <pq>Total Students Did Not Attend: <span id="totalNotAttended"></span></pq>
+    </div>
+
+    <h1>Student Information for Lecturer:</h1>
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>Matric Number</th>
+                <th>Name</th>
+                <th>Attendance</th>
+                <th>IsInside</th>
+                <th>Report</th>
+
+            </tr>
+        </thead>
+        <tbody id="studentList"></tbody>
+
+        
+    </table>
+
+    
+
+    <script type="module">
+        // Import the necessary Firebase SDK modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxu6OOyRDB8O4P5JFKqBtuoL1iHI5YzHQ",
+            authDomain: "akp505.firebaseapp.com",
+            databaseURL: "https://akp505-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "akp505",
+            storageBucket: "akp505.appspot.com",
+            messagingSenderId: "994284144450",
+            appId: "1:994284144450:web:3c282be0013b83d1542adb",
+            measurementId: "G-DFJBZ23V4B"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Function to display students in the lecturer.html page
+        function displayStudents() {
+            // Reference to the "students" collection in the database
+            const studentsRef = ref(database, 'Students UID');
+
+            // Reference to the HTML elements where you want to display the students and totals
+            const studentListElement = document.getElementById('studentList');
+            const totalAttendedElement = document.getElementById('totalAttended');
+            const totalNotAttendedElement = document.getElementById('totalNotAttended');
+
+            // Variables to keep track of attendance totals
+            let totalAttended = 0;
+            let totalNotAttended = 0;
+
+            // Listen for changes in the data (real-time updates)
+            onValue(studentsRef, (snapshot) => {
+                // Clear existing content
+                studentListElement.innerHTML = '';
+
+                // Reset totals
+                totalAttended = 0;
+                totalNotAttended = 0;
+
+                // Iterate through each student and display their information in a table row
+                snapshot.forEach((childSnapshot) => {
+                    const studentData = childSnapshot.val();
+
+                    const email=studentData.email;
+                    console.log(email);
+                    // Create HTML elements to display the student information in a table row
+                    const studentRow = document.createElement('tr');
+                    studentRow.innerHTML = `<td>${studentData.num}</td><td class="left-align">${studentData.name}</td><td>${studentData.attendance}</td><td>${studentData.isInside}</td>
+                        <td>
+                        ${studentData.attendance ? '' : /* Only display the button if attendance is false */
+                          `<form action="mailto:${email}" method="post" enctype="text/plain">
+           
+                            <input type="submit" name="submit" value="Submit">
+                          </form>`
+                        }
+                        </td>`;
+
+                    // Update attendance totals
+                    if (studentData.attendance) {
+                        totalAttended++;
+                    } else {
+                        totalNotAttended++;
+                    }
+
+                    // Append the student row to the table body
+                    studentListElement.appendChild(studentRow);
+                });
+
+                // Display total attendance information
+                totalAttendedElement.textContent = totalAttended;
+                totalNotAttendedElement.textContent = totalNotAttended;
+            });
+        }
+
+        // Call the function to display students when the page loads
+        window.onload = displayStudents;
+
+        document.getElementById("email").addEventListener("click", (e) => {
+			
+		});
+    </script>
+
+    
+
+    <footer>
+        <p>&copy; 2024 Lecturer Page</p>
+    </footer>
+
+</body>
+</html>

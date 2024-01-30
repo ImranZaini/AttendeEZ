@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student's Page</title>
+    <link rel="stylesheet" href="student.css">
+</head>
+<body>
+    <header class="page-header">
+        <nav class="navbar">
+            <a href="index.html">Logout</a>
+            <a href="studentInfo.html">Student Information</a>
+            <a href="schedule.html">Student Schedule</a>
+            <a href="reminder.html">Reminder</a>
+        </nav>
+        <h1 id="welcomeMessage">WELCOME</h1>
+        <h2>Announcement</h2>
+    </header>
+    <div class="container">
+        <div id="text-box"></div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Student Page</p>
+    </footer>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEvx30y193C0EWzaOvjTL6vs2uPWlPW4I",
+            authDomain: "student-aa83a.firebaseapp.com",
+            databaseURL: "https://student-aa83a-default-rtdb.firebaseio.com",
+            projectId: "student-aa83a",
+            storageBucket: "student-aa83a.appspot.com",
+            messagingSenderId: "416227069274",
+            appId: "1:416227069274:web:a5e25c84a083dd967d7763"
+        };
+
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        const uid = loggedInUser.uid;
+        console.log("User UID:", uid);
+        console.log(loggedInUser);
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        
+        function getUser() {
+            const userRef = ref(database, `users/${uid}`);
+            
+            onValue(userRef, (userSnapshot) => {
+                const userData = userSnapshot.val();
+                const username = userData.username; // Adjust this based on your database structure
+                const welcomeMessage = document.getElementById('welcomeMessage');
+                welcomeMessage.textContent = `WELCOME, ${username}`;
+            });
+        }
+
+        function getAnnounce() {
+            const announceRef = ref(database, 'announce');
+            const textbox = document.getElementById('text-box');
+
+            onValue(announceRef, (snapshot) => {
+                let announcements = '';
+
+                snapshot.forEach((childSnapshot) => {
+                    const announcement = childSnapshot.val();
+                    announcements += `<div style="grid-column: 1;"><strong>${announcement.LecName}</strong></div>`;
+                    announcements += `<div style="grid-column: 2 / -1;">${announcement.announce}</div>`;
+                    console.log(announcement);
+                });
+
+                textbox.innerHTML = announcements;
+            });
+        }
+
+        window.onload = () => {
+            getUser();
+            getAnnounce();
+        };
+    </script>
+</body>
+</html>

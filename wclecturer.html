@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Page</title>
+    <link rel="stylesheet" type="text/css" href="wclecturer.css">
+</head>
+<body>
+    <header>
+        <img class="img2" src="images/u5.png" alt="Lecturer Image" width="700" height="250">
+
+        <nav class="navbar">
+            <a href="index.html">Logout</a>
+            
+            <a href="Announce.html">Announcement</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1>Select Course to View Attendance</h1>
+
+        <div id="courseButtonsContainer"></div> </div>
+        <!-- <div class="buttons-container">
+            <a href="CPT101.html" class="navigation-button">CPT101</a>
+            <a href="AKP505.html" class="navigation-button">AKP505</a>
+        </div> -->
+        <!-- <table>
+            <tr>
+                <th>Courses</th>
+                <th>Attendance</th>
+            </tr>
+        </table> -->
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"; 
+        import { getDatabase, set, ref, get } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEvx30y193C0EWzaOvjTL6vs2uPWlPW4I",
+            authDomain: "student-aa83a.firebaseapp.com",
+            databaseURL: "https://student-aa83a-default-rtdb.firebaseio.com",
+            projectId: "student-aa83a",
+            storageBucket: "student-aa83a.appspot.com",
+            messagingSenderId: "416227069274",
+            appId: "1:416227069274:web:a5e25c84a083dd967d7763"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth();
+        
+        // Retrieve user data from localStorage
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        const uid = loggedInUser.uid;
+        console.log("User UID:", uid);
+
+        
+
+        const userRef = ref(database, `users/${uid}`);
+        get(userRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                console.log("User data: ", userData);
+
+                const courseNames = userData.Courses || [];
+        
+
+                const buttonsContainer = document.getElementById("courseButtonsContainer");
+                
+                courseNames.forEach(courseName => {
+                    const courseButton = document.createElement("a");
+                    courseButton.href = `${courseName}.html`;
+                    courseButton.textContent = courseName;
+                    courseButton.classList.add("navigation-button");
+              
+                    buttonsContainer.appendChild(courseButton);
+                  });
+
+            } else {
+                console.error("User data not found in the database");
+            }
+        })
+        
+
+
+    </script>
+</body>
+</html>

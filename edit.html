@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDIT Page</title>
+    <link rel="stylesheet" type="text/css" href="edit.css"> <!-- Link to the external CSS file -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+</head>
+<body>
+
+    <header>
+        <img class="img2" src="images/u2.png" alt="Lecturer Image" width="700" height="250">
+    </header>
+
+    <h1>EDITING PAGE</h1>
+    <table id="tableBody">
+        <thead>
+            <tr>
+                <th>Key Identification</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Role</th>
+                
+            </tr>
+        </thead>
+        <tbody id="tableList"></tbody>
+    </table>
+
+    <div class="buttons-container">
+        <button id="button1">Edit Data</button>
+        <button id="button2">Add Student Course </button>
+    </div>
+    
+    <script type="module">
+        // Import the necessary Firebase SDK modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEvx30y193C0EWzaOvjTL6vs2uPWlPW4I",
+            authDomain: "student-aa83a.firebaseapp.com",
+            databaseURL: "https://student-aa83a-default-rtdb.firebaseio.com",
+            projectId: "student-aa83a",
+            storageBucket: "student-aa83a.appspot.com",
+            messagingSenderId: "416227069274",
+            appId: "1:416227069274:web:a5e25c84a083dd967d7763"
+        };
+
+        // Initialize Firebase
+        const firebaseApp = initializeApp(firebaseConfig);
+
+        const database = getDatabase(firebaseApp);
+        const auth = getAuth(firebaseApp);
+
+        // Reference to the parent node
+        const userRef = ref(database, 'users');
+        // Reference to the HTML elements where you want to display the students
+        const tableListElement = document.getElementById('tableList');
+
+        // Perform a query to retrieve children
+        onValue(userRef, (snapshot) => {
+            tableListElement.innerHTML = '';
+
+            snapshot.forEach((childSnapshot) => {
+                const userData = childSnapshot.val();
+                const email = userData.email;
+                const role = extractRoleFromEmail(email);
+
+                const userRow = document.createElement('tr');
+                userRow.innerHTML = `<td>${childSnapshot.key}</td><td>${userData.email}</td><td>${userData.username}</td>
+                    <td>${role}</td>`;
+                tableListElement.appendChild(userRow);
+            });
+        });
+
+        function modify(keyID){
+            //prompt("modify user with keyID:"+ keyID);
+            // Add your modify logic here
+
+            const userInput = prompt("Modify user with keyID: " + keyID + "\nEnter 'username' or 'password'");
+            if (userInput) {
+                if (userInput.toLowerCase() === 'u') {
+                    const newUsername = prompt("Enter the new username:");
+                    if (newUsername) {
+                        // Add your logic for modifying the username
+                    }
+                } 
+                else if (userInput.toLowerCase() === 'p') {
+                    const newPassword = prompt("Enter the new password:");
+                    if (newPassword) {
+                        // Add your logic for modifying the password
+                    }
+                } 
+                else {
+                    alert("Invalid input. Please enter 'username' or 'password'.");
+                }
+            }
+        }
+
+        function deleteUser(keyID){
+            console.log("delete user with keyID:"+ keyID);
+            // Add your delete logic here
+        }
+
+        function extractRoleFromEmail(email) {
+          // Assuming the email format is: xxx@admin.com
+          const role = email.split('@')[1].split('.')[0];
+          return role;
+        }
+        const button1 = document.getElementById('button1');
+        const button2 = document.getElementById('button2');
+
+        // Add event listeners to handle button clicks
+        button1.addEventListener('click', () => {
+            // Redirect to a specific link when Button 1 is clicked
+            window.location.href = 'https://console.firebase.google.com/u/0/project/student-aa83a/database/student-aa83a-default-rtdb/data';
+        });
+
+        button2.addEventListener('click', () => {
+            // Redirect to a specific link when Button 2 is clicked
+            window.location.href = 'studentInfo(admin).html';
+        });
+    </script>
+
+    <footer>
+        <p>&copy; 2024 Lecturer Page</p>
+    </footer>
+</body>
+</html>

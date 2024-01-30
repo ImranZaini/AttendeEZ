@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+body{
+    font-family: 'Poppins', sans-serif;
+    color: #fefefe;
+    text-align: center;
+    background-image: url('images/webbc3.webp');
+}
+
+.navbar {
+    background-color: #433b3b; /* Choose your desired background color */
+    overflow: hidden;
+}
+
+.navbar a {
+    float: right;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #f4eeee; /* Choose your desired hover background color */
+    color: black;
+}
+
+.page-header {
+    text-align: center;
+}
+
+.page-header h1 {
+    color: #333;
+}
+
+* {
+    box-sizing: border-box;
+}
+.container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.rectangle {
+    width: 200px;
+    height: 400px;
+    background-color: #433b3b;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    position: relative;
+}
+
+.rectangle1{
+    width: 200px;
+    height: 400px;
+    background-color: #433b3b;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    position: relative;
+}
+
+.rectangle2{
+    width: 200px;
+    height: 400px;
+    background-color: #433b3b;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    position: relative;
+}
+
+.text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    text-align: center;
+}
+
+
+

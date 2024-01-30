@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+    <header>
+        <img class="img2" src="images/u2.png" alt="Admin Image" width="700" height="250">
+    </header>
+
+    <h1>User Information:</h1>
+    <table id="tableBody">
+        <thead>
+            <tr>
+                
+                <th>Email</th>
+                <th>Username</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody id="tableList"></tbody>
+    </table>
+    <button id="editButton">Modify</button>
+
+    <script type="module">
+        // Import the necessary Firebase SDK modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEvx30y193C0EWzaOvjTL6vs2uPWlPW4I",
+            authDomain: "student-aa83a.firebaseapp.com",
+            databaseURL: "https://student-aa83a-default-rtdb.firebaseio.com",
+            projectId: "student-aa83a",
+            storageBucket: "student-aa83a.appspot.com",
+            messagingSenderId: "416227069274",
+            appId: "1:416227069274:web:a5e25c84a083dd967d7763"
+        };
+
+        // Initialize Firebase
+        const firebaseApp = initializeApp(firebaseConfig);
+
+        const database = getDatabase(firebaseApp);
+        const auth = getAuth(firebaseApp);
+
+        // Reference to the parent node
+        const userRef = ref(database, 'users');
+        // Reference to the HTML elements where you want to display the students
+        const tableListElement = document.getElementById('tableList');
+
+        // Perform a query to retrieve children
+        onValue(userRef, (snapshot) => {
+            // Clear previous data
+            tableListElement.innerHTML = '';
+
+            snapshot.forEach((childSnapshot) => {
+                const userData = childSnapshot.val();
+                
+                // Extract role from email
+                const email = userData.email;
+                const role = extractRoleFromEmail(email);
+
+                
+
+                // Create a table row and insert data
+                const userRow = document.createElement('tr');
+                userRow.innerHTML = `<td>${userData.email}</td><td>${userData.username}</td>
+                    <td>${role}</td>`;
+
+                // Append the row to the table body
+                tableListElement.appendChild(userRow);
+            });
+        });
+        
+
+        function extractRoleFromEmail(email) {
+          // Assuming the email format is: xxx@admin.com
+          const role = email.split('@')[1].split('.')[0];
+          return role;
+      }
+
+      const editButton = document.getElementById('editButton');
+      editButton.addEventListener('click', () => {
+        // Navigate to Edit.html
+        window.location.href = 'https://console.firebase.google.com/u/0/';
+    });
+    </script>
+
+    <footer>
+        <p>&copy; 2024 Admin Page</p>
+    </footer>
+</body>
+
+</html>

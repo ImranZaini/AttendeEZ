@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement</title>
+    <link rel="stylesheet" href="announce.css">
+</head>
+
+
+<body>
+    <header class="page-header">
+        <nav class="navbar">
+            <a href="wclecturer.html" class="home">Home</a>
+        </nav>
+        <h2>Announcement</h2>
+    </header>
+    <label>Lecturer Name: </label>
+    <input type="text" id="LecNameInp">
+    <br><br>    
+
+    <label>Announce: </label>
+    <input type="text" id="announceInp">
+    <br><br>  
+    
+    <button id="AddBtn">Add</button>
+    <button id="DelBtn">Delete</button>
+
+    
+    
+    
+    <script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+  
+    const firebaseConfig = {
+        apiKey: "AIzaSyDEvx30y193C0EWzaOvjTL6vs2uPWlPW4I",
+        authDomain: "student-aa83a.firebaseapp.com",
+        databaseURL: "https://student-aa83a-default-rtdb.firebaseio.com",
+        projectId: "student-aa83a",
+        storageBucket: "student-aa83a.appspot.com",
+        messagingSenderId: "416227069274",
+        appId: "1:416227069274:web:a5e25c84a083dd967d7763"
+    };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+        import { getDatabase, ref, set, update, remove } from  "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+
+
+        const db = getDatabase();
+        let LecNameInp = document.getElementById('LecNameInp');
+        let announceInp = document.getElementById('announceInp');
+
+        let AddBtn = document.getElementById('AddBtn');
+        let UpdBtn = document.getElementById('UpdBtn');
+        let DelBtn = document.getElementById('DelBtn');
+
+        function AddData(){
+             if (!validateData1()) {
+                alert("Please enter valid data.");
+            return;
+            }
+            set(ref(db,'announce/'+ LecNameInp.value),{
+                LecName: LecNameInp.value,
+                announce: announceInp.value
+            })
+            .then(()=>{
+                alert("Data Added Successfully");
+            })
+            .catch(()=>{
+                alert("Unsuccessful");
+                console.log(error);
+            })
+        }
+
+        function UpdateData(){
+            if (!validateData1()) {
+                alert("Please enter valid data.");
+            return;
+            }
+            update(ref(db,'announce/'+ LecNameInp.value),{
+                LecName: LecNameInp.value,
+                announce: announceInp.value
+            })
+            .then(()=>{
+                alert("Data updated Successfully");
+            })
+            .catch(()=>{
+                alert("Unsuccessful");
+                console.log(error);
+            })
+        }
+
+        function DeleteData(){
+            if (!validateData2()) {
+                alert("Please enter valid data.");
+            return;
+            }
+            remove(ref(db,'announce/'+ LecNameInp.value),{
+                LecName: LecNameInp.value,
+                announce: announceInp.value
+            })
+            .then(()=>{
+                alert("Data removed Successfully");
+            })
+            .catch(()=>{
+                alert("Unsuccessful");
+                console.log(error);
+            })
+        }
+
+        // Validate data function
+        function validateData1() {
+            if (LecNameInp.value === "" || announceInp.value === "") {
+            return false;
+        }
+            return true;
+        }
+
+        function validateData2() {
+            if (LecNameInp.value === "") {
+            return false;
+        }
+            return true;
+        }
+
+       
+
+
+        AddBtn.addEventListener('click', AddData);
+        DelBtn.addEventListener('click', DeleteData);
+        UpdBtn.addEventListener('click', UpdateData);
+       
+      </script>
+</body>
+</html>
